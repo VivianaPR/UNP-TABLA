@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { BusquedaInput } from './buscador';
 import { CustomModal } from './modal';
+import '../styles/tabla.css'
 
+//Interfaz de las columnas
 interface Column {
     key: string;
     label: string;
     hasModal?: boolean;
 }
 
+//Interfaz del Props del modal
 interface TableProps {
     columns: Column[];
     data: Array<Record<string, any>>;
@@ -16,16 +19,22 @@ interface TableProps {
 }
 
 const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalContent }) => {
+
+    //Constante del buscador
     const [searchTerm, setSearchTerm] = useState<string>("");
+
+    //Constantes del modal
     const [modalData, setModalData] = useState<{ row: Record<string, any>, column: Column } | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
 
+    //Función de filtro del input de búsqueda
     const filteredData = data.filter(row =>
         columns.some(column =>
             String(row[column.key]).toLowerCase().includes(searchTerm.toLowerCase())
         )
     );
 
+    //Función que renderiza los modales en las celdas de la tabla
     const handleCellClick = (column: Column, row: Record<string, any>) => {
         if (column.hasModal && renderModalContent) {
             setModalData({ row, column });

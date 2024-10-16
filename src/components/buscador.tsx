@@ -1,6 +1,7 @@
 import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import { Form } from "react-bootstrap";
+import '../styles/buscador.css'
 
 interface BusquedaInputProps {
     onSearch: (value: string) => void;

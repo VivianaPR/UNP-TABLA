@@ -1,0 +1,16 @@
+.table_container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2.5rem;
+}
+
+.cell-with-modal {
+    transition: background-color 0.3s ease;
+}
+
+.cell-with-modal:hover {
+    background-color: #303D50;
+    color: white;
+    font-weight: 600;
+}
