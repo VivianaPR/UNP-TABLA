@@ -1,5 +1,5 @@
 import './App.css';
-import { OrdenTrabajo } from './Panel/lista_ot';
+import { OrdenTrabajo } from './Panel/Lista-AR/lista_ot';
 
 function App() {
   return (

@@ -2,39 +2,32 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { BusquedaInput } from './buscador';
 import { CustomModal } from './modal';
-import '../styles/tabla.css'
+import '../styles/tabla.css';
 
-//Interfaz de las columnas
 interface Column {
     key: string;
     label: string;
     hasModal?: boolean;
 }
 
-//Interfaz del Props del modal
 interface TableProps {
     columns: Column[];
     data: Array<Record<string, any>>;
-    renderModalContent?: (row: Record<string, any>, column: Column) => React.ReactNode; // Función para renderizar dinámicamente el modal
+    renderModalContent?: (row: Record<string, any>, column: Column) => React.ReactNode;
+    totalDias: number;  // Añadido: parámetro para el número de días totales
 }
 
-const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalContent }) => {
-
-    //Constante del buscador
+const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalContent, totalDias }) => {
     const [searchTerm, setSearchTerm] = useState<string>("");
-
-    //Constantes del modal
     const [modalData, setModalData] = useState<{ row: Record<string, any>, column: Column } | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
 
-    //Función de filtro del input de búsqueda
     const filteredData = data.filter(row =>
         columns.some(column =>
             String(row[column.key]).toLowerCase().includes(searchTerm.toLowerCase())
         )
     );
 
-    //Función que renderiza los modales en las celdas de la tabla
     const handleCellClick = (column: Column, row: Record<string, any>) => {
         if (column.hasModal && renderModalContent) {
             setModalData({ row, column });
@@ -42,12 +35,22 @@ const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalConten
         }
     };
 
+    // Función para determinar el color de fondo según el valor de `dias_habiles`
+    const getBackgroundColor = (diasHabiles: number) => {
+        const porcentaje = (diasHabiles / totalDias) * 100;
+        
+        if (porcentaje <= 25) return '#CBFDBD';
+        if (porcentaje <= 50) return '#ffffd4';
+        if (porcentaje <= 75) return '#FFEBD0';
+        return '#FFD0D3';
+    };
+
     return (
         <div className='table_container'>
-            {/* Buscador */}
-            <BusquedaInput onSearch={setSearchTerm} />
+            <div className='unp-row'>
+                <BusquedaInput onSearch={setSearchTerm} />
+            </div>
 
-            {/* Tabla */}
             <Table striped hover responsive>
                 <thead>
                     <tr>
@@ -61,10 +64,15 @@ const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalConten
                         filteredData.map((row, rowIndex) => (
                             <tr key={rowIndex}>
                                 {columns.map((column, colIndex) => (
-                                    <td 
+                                    <td
                                         key={colIndex}
                                         onClick={() => handleCellClick(column, row)}
-                                        style={{ cursor: column.hasModal ? 'pointer' : 'default', }}
+                                        style={{
+                                            cursor: column.hasModal ? 'pointer' : 'default',
+                                            backgroundColor: column.key === 'dias_habiles' 
+                                                ? getBackgroundColor(row.dias_habiles) // Aplicar color condicional
+                                                : 'transparent',
+                                        }}
                                         className={column.hasModal ? 'cell-with-modal' : ''}
                                     >
                                         {row[column.key]}
@@ -82,14 +90,12 @@ const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalConten
                 </tbody>
             </Table>
 
-            {/* Modal */}
             {modalData && renderModalContent && (
                 <CustomModal
                     show={showModal}
                     onHide={() => setShowModal(false)}
-                    title={`Información de ${modalData.column.label}`}
+                    title={`${modalData.column.label}`}
                 >
-                    {/* Contenido dinámico del modal */}
                     {renderModalContent(modalData.row, modalData.column)}
                 </CustomModal>
             )}

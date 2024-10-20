@@ -14,7 +14,8 @@ const BusquedaInput: React.FC<BusquedaInputProps> = ({ onSearch }) => {
     };
 
     return (
-        <Form.Group className="d-flex align-items-center mx-1 position-relative">
+        <div className="search-container">
+            <Form.Group className="d-flex align-items-center mx-1 position-relative">
             <Form.Control
                 type="text"
                 className="me-0 input-with-icon"
@@ -23,6 +24,8 @@ const BusquedaInput: React.FC<BusquedaInputProps> = ({ onSearch }) => {
             />
             <BiSearchAlt className="input-icon" />
         </Form.Group>
+        </div>
+        
     );
 };
 

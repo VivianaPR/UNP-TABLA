@@ -10,7 +10,7 @@
 }
 
 .cell-with-modal:hover {
-    background-color: #303D50;
+    background-color: #303D50 !important;
     color: white;
     font-weight: 600;
 }

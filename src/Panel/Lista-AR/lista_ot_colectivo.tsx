@@ -1,26 +1,24 @@
-import { BootstrapTable } from '../components/tabla';
+import { BootstrapTable } from "../../components/tabla"
 
-export function OrdenTrabajo() {
-
+export function OrdenesTrabajoColectivas() {
     const columns = [
         { key: "no_orden", label: "No de Orden", hasModal: true },
-        { key: "nombre_evaluado", label: "Nombre del Evaluado", hasModal: true  },
+        { key: "nombre_evaluado", label: "Grupo evaluado", hasModal: true },
         { key: "id_evaluado", label: "Identificación" },
         { key: "fecha_asignacion", label: "Fecha de asignación" },
-        { key: "dias_habiles", label: "Días hábiles", hasModal: true },
+        { key: "dias_habiles", label: "Días hábiles" },
         { key: "poblacion", label: "Población" },
         { key: "tipo_estudio", label: "Tipo de estudio", hasModal: true }
     ];
 
     const data = [
-        { no_orden: "OT001", nombre_evaluado: "Viviana Pérez", id_evaluado: "100354321", fecha_asignacion: "12/06/2024", dias_habiles: 2, poblacion: "ROM", tipo_estudio: "A" },
-        { no_orden: "OT002", nombre_evaluado: "Juan Díaz", id_evaluado: "465432154", fecha_asignacion: "12/07/2024", dias_habiles: 10, poblacion: "AFRO", tipo_estudio: "A1" },
-        { no_orden: "OT003", nombre_evaluado: "Camila Cortes", id_evaluado: "784521432", fecha_asignacion: "12/08/2024", dias_habiles: 45, poblacion: "LGBT", tipo_estudio: "A6" }
+        { no_orden: "OTC01", nombre_evaluado: "Líderes comunales / CAUCA", id_evaluado: "100354321", fecha_asignacion: "12/06/2024", dias_habiles: 7, poblacion: "ROM", tipo_estudio: "A" },
+        { no_orden: "OTC02", nombre_evaluado: "Grupo AFRO - LGBT / ATLANTICO ", id_evaluado: "465432154", fecha_asignacion: "12/07/2024", dias_habiles: 33, poblacion: "AFRO", tipo_estudio: "A1" },
+        { no_orden: "OTC03", nombre_evaluado: "Mujeres cabeza de hogar / NARIÑO", id_evaluado: "784521432", fecha_asignacion: "12/08/2024", dias_habiles: 45, poblacion: "LGBT", tipo_estudio: "A6" }
     ];
 
     // Función para renderizar contenido dinámico en el modal
     const renderModalContent = (row: Record<string, any>, column: any) => {
-
         if (column.key === "no_orden") {
             return (
                 <div>
@@ -42,21 +40,19 @@ export function OrdenTrabajo() {
             );
         }
 
-        // Contenido por defecto si no es ninguna de las claves anteriores
         return <p>No hay información adicional disponible.</p>;
     };
 
     return (
         <>
-            <h1>Órdenes de Trabajo</h1>
             <div>
                 <BootstrapTable
                     columns={columns}
                     data={data}
                     renderModalContent={renderModalContent}
+                    totalDias={50}
                 />
             </div>
         </>
     )
-
 }
