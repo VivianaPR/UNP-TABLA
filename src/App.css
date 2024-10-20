@@ -1,5 +1,5 @@
 .main_container {
-  padding: 0 1rem;
+  padding: 2rem;
 }
 
 .custom-button {
@@ -22,7 +22,6 @@
   width: 100%;
   min-height: fit-content;
   justify-content: space-between;
-  padding-top: 2rem;
 }
 
 .unp-row .alone {
@@ -36,6 +35,23 @@
   font-weight: 600;
   color: #D36269;
 }
+
+/* Estilos personalizados para navegadores basados en WebKit (Chrome, Safari) */
+.modal_body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal_body::-webkit-scrollbar-track {
+  background: transparent; /* Fondo del track de la barra */
+}
+
+.modal_body::-webkit-scrollbar-thumb {
+  background-color: #303D50; /* Color de la barra */
+  border-radius: 10px; /* Bordes redondeados */
+  border: 3px solid transparent; /* Espacio entre la barra y el track */
+  background-clip: padding-box; /* Para que el borde no se solape con la barra */
+}
+
 
 @media (max-width: 500px) {
   .unp-row {

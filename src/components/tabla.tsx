@@ -14,10 +14,11 @@ interface TableProps {
     columns: Column[];
     data: Array<Record<string, any>>;
     renderModalContent?: (row: Record<string, any>, column: Column) => React.ReactNode;
-    totalDias: number;  // Añadido: parámetro para el número de días totales
+    totalDias?: number;
 }
 
 const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalContent, totalDias }) => {
+
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [modalData, setModalData] = useState<{ row: Record<string, any>, column: Column } | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -37,12 +38,14 @@ const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalConten
 
     // Función para determinar el color de fondo según el valor de `dias_habiles`
     const getBackgroundColor = (diasHabiles: number) => {
-        const porcentaje = (diasHabiles / totalDias) * 100;
-        
-        if (porcentaje <= 25) return '#CBFDBD';
-        if (porcentaje <= 50) return '#ffffd4';
-        if (porcentaje <= 75) return '#FFEBD0';
-        return '#FFD0D3';
+        if (totalDias) {
+            const porcentaje = (diasHabiles / totalDias) * 100;
+            if (porcentaje <= 25) return '#CBFDBD';
+            if (porcentaje <= 50) return '#ffffd4';
+            if (porcentaje <= 75) return '#FFEBD0';
+            return '#FFD0D3';
+        }
+        return 'transparent';
     };
 
     return (
@@ -69,7 +72,7 @@ const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalConten
                                         onClick={() => handleCellClick(column, row)}
                                         style={{
                                             cursor: column.hasModal ? 'pointer' : 'default',
-                                            backgroundColor: column.key === 'dias_habiles' 
+                                            backgroundColor: column.key === 'dias_habiles'
                                                 ? getBackgroundColor(row.dias_habiles) // Aplicar color condicional
                                                 : 'transparent',
                                         }}
@@ -104,3 +107,4 @@ const BootstrapTable: React.FC<TableProps> = ({ columns, data, renderModalConten
 };
 
 export { BootstrapTable };
+

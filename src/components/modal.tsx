@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-import '../styles/modal.css'
+import React, { useState, useEffect } from 'react';
+import '../styles/modal.css';
 
-//Interfaz del modal
 interface CustomModalProps {
     show: boolean;
     onHide: () => void;
     title: string;
-    children: React.ReactNode; // Contenido dinámico del body del modal
+    children: React.ReactNode;
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({ show, onHide, title, children }) => {
-
-    //Constante que maneja los estados del modal
+    
+    const [showModal, setShowModal] = useState(false);
     const [closing, setClosing] = useState(false);
 
-    //Constante que determina el temporizador de visualización del modal 
+    useEffect(() => {
+        if (show) {
+            setTimeout(() => setShowModal(true), 50); 
+        } else {
+            setShowModal(false);
+        }
+    }, [show]);
+
     const handleHide = () => {
         setClosing(true);
         setTimeout(() => {
@@ -24,23 +30,18 @@ const CustomModal: React.FC<CustomModalProps> = ({ show, onHide, title, children
     };
 
     return (
-
-        //Modal
-        <div className={`modal-overlay ${show ? 'show' : ''}`} onClick={handleHide}>
-            <div 
-                className={`modal-container ${show ? 'show' : ''} ${closing ? 'hide' : ''}`} 
+        <div className={`modal-overlay ${showModal ? 'show' : ''}`} onClick={handleHide}>
+            <div
+                className={`modal-container ${showModal ? 'show' : ''} ${closing ? 'hide' : ''}`}
                 onClick={e => e.stopPropagation()}
             >
-                {/*Header del modal*/}
                 <div className="modal_header">
                     <span>{title}</span>
-                    <button className="close_button" onClick={handleHide}>&times;</button>
+                    <button className="close_button" onClick={handleHide}>
+                        &times;
+                    </button>
                 </div>
-                
-                {/*Body del modal*/}
-                <div className="modal_body">
-                    {children} 
-                </div>
+                <div className="modal_body">{children}</div>
             </div>
         </div>
     );
